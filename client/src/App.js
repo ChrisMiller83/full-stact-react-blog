@@ -43,6 +43,7 @@ function App() {
         setUserStatus('CHECKED');
       });
   }, [dispatch]);
+  
   return (
     <div className="App">
       <AppBar position="static">
