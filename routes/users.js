@@ -34,8 +34,8 @@ router.post('/register', async (req, res) => {
   // create user
   const newUser = await models.User.create({
     username: req.body.username,
-    password: hash
-  })  
+    password: hash,
+  });  
   // respond with success message
   return res.status(201).json({newUser});
 
@@ -48,7 +48,7 @@ router.post('/login', async (req, res) => {
   if (!req.body.username || !req.body.password) {
     return res.status(400).json({
       error: 'Please include username and password'
-    })
+    });
   }
 
   // find user from username
@@ -92,7 +92,22 @@ router.get('/logout', (req, res) => {
   // send success response
   res.json({
     success: 'Logged out successfully',
-  })
-})
+  });
+});
+
+router.get('/current', (req, res) => {
+  const { user } = req.session;
+  if (user) {
+    res.json({
+      id: user.id,
+      username: user.username,
+      updatedAt: user.updatedAt,
+    });
+  } else {
+    res.status(401).json({
+      error: 'Not logged in',
+    });
+  }
+});
 
 module.exports = router;
